@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'vipps' => [
+        'client_id' => env('VIPPS_CLIENT_ID'),
+        'client_secret' => env('VIPPS_CLIENT_SECRET'),
+        'redirect' => env('VIPPS_REDIRECT_URI'),
+    ],
+
 ];

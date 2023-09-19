@@ -10,7 +10,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "laravel/nova": "^4.0"
+        "laravel/nova": "^4.0",
+        "respekt-no/socialite-provider-vipps": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -25,6 +26,10 @@
         {
             "type": "composer",
             "url": "https://nova.laravel.com"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/respekt-no/socialite-provider-vipps"
         }
     ],
     "autoload": {
