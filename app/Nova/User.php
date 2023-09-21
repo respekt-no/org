@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -45,12 +46,15 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('Vipps ID')->onlyOnDetail(),
 
-            Gravatar::make()->maxWidth(50),
+            // Gravatar::make()->maxWidth(50),
 
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
+
+
 
             Text::make('Email')
                 ->sortable()

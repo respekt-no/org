@@ -41,4 +41,9 @@ class User extends Authenticatable
         'other_addresses' => 'array',
         'password' => 'hashed',
     ];
+
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
+    }
 }

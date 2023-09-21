@@ -44,7 +44,5 @@ Route::get('/login/vipps/callback', function () {
 
     Auth::login($user);
 
-    dd($user);
-
-    return redirect('/');
+    return redirect('/nova');
 });
