@@ -14,7 +14,8 @@
         "laravel/tinker": "^2.8",
         "respekt-no/socialite-provider-vipps": "dev-main",
         "symfony/http-client": "^6.3",
-        "symfony/postmark-mailer": "^6.3"
+        "symfony/postmark-mailer": "^6.3",
+        "ext-iconv": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -4,12 +4,15 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class User extends Resource
 {
@@ -50,22 +53,39 @@ class User extends Resource
 
             // Gravatar::make()->maxWidth(50),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-
-
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+            new Panel('Identity', $this->identityFields()),
+            new Panel('E-mail', $this->emailFields()),
 
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+        ];
+    }
+
+    public function identityFields()
+    {
+        return [
+            Text::make('Name')
+                ->sortable()
+                ->rules('required', 'max:255'),
+            Date::make('Birth date', 'birthdate'),
+        ];
+    }
+
+    public function emailFields()
+    {
+        return [
+
+            Text::make('Email')
+            ->sortable()
+            ->rules('required', 'email', 'max:254')
+            ->creationRules('unique:users,email')
+            ->updateRules('unique:users,email,{{resourceId}}'),
+
+            Boolean::make('Verified by Vipps', 'email_verified')->onlyOnDetail(),
+            Boolean::make('Verified by system', 'email_verified_at')->onlyOnDetail(),
+
         ];
     }
 
