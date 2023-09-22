@@ -46,4 +46,29 @@ class User extends Authenticatable
     {
         return $this->hasMany(Membership::class);
     }
+
+    /**
+     * Get the user's currently active membership, if any
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeCurrent($query)
+    {
+        return $query
+            ->where('valid_from', '<=', Carbon::now())
+            ->where('valid_to', '>=', Carbon::now())
+            ->orderBy('updated_at', 'desc')
+            ->limit(1);
+    }
+
+    /*
+     * Get the user's active memberships
+     */
+    public function scopeActive($query)
+    {
+        return $query
+            ->where('valid_from', '<=', Carbon::now())
+            ->where('valid_to', '>=', Carbon::now());
+    }
 }
