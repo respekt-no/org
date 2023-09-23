@@ -59,6 +59,8 @@ class User extends Resource
             new Panel('Identity', $this->identityFields()),
             new Panel('E-mail', $this->emailFields()),
 
+            new Panel('Phone', $this->phoneFields()),
+
             Boolean::make('Active membership', 'has_active_membership' )->onlyOnIndex(),
 
             Password::make('Password')
@@ -83,7 +85,6 @@ class User extends Resource
     public function emailFields()
     {
         return [
-
             Text::make('Email')
             ->sortable()
             ->rules('required', 'email', 'max:254')
@@ -92,7 +93,13 @@ class User extends Resource
 
             Boolean::make('Verified by Vipps', 'email_verified')->onlyOnDetail(),
             Boolean::make('Verified by system', 'email_verified_at')->onlyOnDetail(),
+        ];
+    }
 
+    public function phoneFields()
+    {
+        return [
+            Text::make('Phone Number', 'phone_number'),
         ];
     }
 
