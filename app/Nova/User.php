@@ -2,11 +2,15 @@
 
 namespace App\Nova;
 
+use App\Models\Membership;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Password;
@@ -50,16 +54,19 @@ class User extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Vipps ID')->onlyOnDetail(),
-
-            // Gravatar::make()->maxWidth(50),
+            Boolean::make('Active membership', 'has_active_membership' )->onlyOnDetail(),
 
             new Panel('Identity', $this->identityFields()),
             new Panel('E-mail', $this->emailFields()),
+
+            Boolean::make('Active membership', 'has_active_membership' )->onlyOnIndex(),
 
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+
+            new Panel('Membership', $this->membershipFields()),
         ];
     }
 
@@ -86,6 +93,16 @@ class User extends Resource
             Boolean::make('Verified by Vipps', 'email_verified')->onlyOnDetail(),
             Boolean::make('Verified by system', 'email_verified_at')->onlyOnDetail(),
 
+        ];
+    }
+
+    public function membershipFields()
+    {
+        return [
+
+            HasMany::make('Memberships', 'memberships'),
+
+            // Boolean::make('Active membership', 'has_active_membership' ),
         ];
     }
 

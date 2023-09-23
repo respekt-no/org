@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Organization extends Model
 {
     use HasFactory;
+
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
+    }
 }

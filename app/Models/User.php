@@ -29,6 +29,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = [
+        'has_active_membership',
+        'member_since',
+    ];
+
     /**
      * The attributes that should be cast.
      *
@@ -40,35 +45,22 @@ class User extends Authenticatable
         'address' => 'array',
         'other_addresses' => 'array',
         'password' => 'hashed',
+        'member_since' => 'datetime',
     ];
+
 
     public function memberships()
     {
         return $this->hasMany(Membership::class);
     }
 
-    /**
-     * Get the user's currently active membership, if any
-     *
-     * @param $query
-     * @return mixed
-     */
-    public function scopeCurrent($query)
+    public function getHasActiveMembershipAttribute()
     {
-        return $query
-            ->where('valid_from', '<=', Carbon::now())
-            ->where('valid_to', '>=', Carbon::now())
-            ->orderBy('updated_at', 'desc')
-            ->limit(1);
+        return (bool) $this->memberships()->current()->get()->first();
     }
 
-    /*
-     * Get the user's active memberships
-     */
-    public function scopeActive($query)
+    public function getMemberSinceAttribute()
     {
-        return $query
-            ->where('valid_from', '<=', Carbon::now())
-            ->where('valid_to', '>=', Carbon::now());
+        return $this->memberships()->current()->get()->first()->valid_from ?? null;
     }
 }
